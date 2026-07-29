@@ -1,0 +1,22 @@
+<nav class="navbar">
+  <div class="logo" (click)="irParaHome()">DevPortfolio</div>
+
+  <ul class="nav-links">
+    <li><a routerLink="/sobre">Sobre</a></li>
+    <li><a routerLink="/perfis">Perfis</a></li>
+    <li><a routerLink="/contato">Contato</a></li>
+  </ul>
+
+  <div class="nav-actions">
+    <!-- Se NÃO estiver logado -->
+    <a *ngIf="!estaLogado()" routerLink="/login" class="btn-login-nav">
+      Login Admin
+    </a>
+
+    <!-- Se ESTIVER logado como Admin -->
+    <div *ngIf="estaLogado()" class="admin-menu">
+      <a routerLink="/admin" class="btn-admin-nav">Painel Admin</a>
+      <button (click)="logout()" class="btn-logout">Sair</button>
+    </div>
+  </div>
+</nav>

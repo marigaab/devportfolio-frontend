@@ -1,0 +1,13 @@
+<div class="card">
+  <img [src]="projeto.urlImagem || 'https://via.placeholder.com/300x180'" alt="Imagem do Projeto" class="card-img">
+  <div class="card-body">
+    <h3>{{ projeto.titulo }}</h3>
+    <p>{{ projeto.descricao }}</p>
+    <span class="badge">{{ projeto.tecnologias }}</span>
+    
+    <div class="card-actions">
+      <a *ngIf="projeto.urlRepositorio" [href]="projeto.urlRepositorio" target="_blank" class="btn btn-outline">GitHub</a>
+      <a *ngIf="projeto.urlDeploy" [href]="projeto.urlDeploy" target="_blank" class="btn btn-primary">Demo</a>
+    </div>
+  </div>
+</div>

@@ -1,0 +1,60 @@
+<app-navbar></app-navbar>
+
+<!-- HERO SECTION -->
+<header class="hero">
+  <div class="hero-content">
+    <span class="badge-tech">Java • Spring Boot • Angular • MySQL</span>
+    <h1>Explore os Melhores <span>Portfólios Devs</span> 🚀</h1>
+    <p>Conecte-se com talentos da tecnologia, conheça suas trajetórias e navegue por seus projetos e repositórios.</p>
+    
+    <div class="hero-actions">
+      <!-- 🚀 Botão apontando exatamente para a página de Desenvolvedores/Perfis -->
+      <a routerLink="/perfis" class="btn-primary">Ver Desenvolvedores</a>
+      <a routerLink="/contato" class="btn-secondary">Falar Conosco</a>
+    </div>
+  </div>
+</header>
+
+<main class="container">
+  <!-- SEÇÃO DE DESENVOLVEDORES -->
+  <section class="section-block">
+    <div class="section-title">
+      <h2>Desenvolvedores Cadastrados</h2>
+      <p>Conheça quem faz a comunidade acontecer</p>
+    </div>
+
+    <!-- Lista os desenvolvedores se houver algum -->
+    <div class="grid-devs" *ngIf="listaPerfis.length > 0">
+      <div *ngFor="let dev of listaPerfis" class="dev-card">
+        <img 
+          [src]="dev.fotoUrl || 'https://ui-avatars.com/api/?name=' + dev.nome + '&background=6366f1&color=fff'" 
+          [alt]="dev.nome" 
+          class="dev-avatar"
+        >
+        <h3>{{ dev.nome }}</h3>
+        <span class="dev-cargo">{{ dev.cargo || 'Desenvolvedor' }}</span>
+        
+        <a [routerLink]="['/dev', dev.id || dev.usuarioId]" class="btn-ver-projetos">
+          Ver Perfil & Projetos <span class="arrow">→</span>
+        </a>
+      </div>
+    </div>
+
+    <!-- Se a lista estiver vazia -->
+    <div *ngIf="listaPerfis.length === 0" class="empty-state">
+      <p>Nenhum desenvolvedor cadastrado até o momento.</p>
+    </div>
+  </section>
+
+  <!-- SEÇÃO DE PROJETOS RECENTES -->
+  <section class="section-block" *ngIf="projetos.length > 0">
+    <div class="section-title">
+      <h2>Projetos Recentes</h2>
+      <p>Confira as soluções criadas pelos nossos devs</p>
+    </div>
+
+    <div class="grid-projetos">
+      <app-projeto-card *ngFor="let p of projetos" [projeto]="p"></app-projeto-card>
+    </div>
+  </section>
+</main>

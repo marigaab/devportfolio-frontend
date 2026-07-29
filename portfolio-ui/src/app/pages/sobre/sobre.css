@@ -1,0 +1,94 @@
+.sobre-container {
+  max-width: 1000px;
+  margin: 0 auto;
+  padding: 40px 20px;
+  color: #1e293b;
+}
+
+.sobre-header {
+  text-align: center;
+  margin-bottom: 50px;
+}
+
+.sobre-header h1 {
+  font-size: 2.5rem;
+  font-weight: 800;
+}
+
+.sobre-header h1 span {
+  color: #6366f1;
+}
+
+.subtitle {
+  font-size: 1.1rem;
+  color: #64748b;
+  margin-top: 8px;
+}
+
+.como-funciona-grid {
+  display: grid;
+  grid-template-columns: repeat(auto-fit, minmax(280px, 1fr));
+  gap: 24px;
+  margin-bottom: 60px;
+}
+
+.card-passo {
+  background: #ffffff;
+  padding: 30px;
+  border-radius: 12px;
+  border: 1px solid #e2e8f0;
+  box-shadow: 0 4px 12px rgba(0,0,0,0.03);
+  position: relative;
+}
+
+.step-number {
+  background: #6366f1;
+  color: #fff;
+  width: 36px;
+  height: 36px;
+  border-radius: 50%;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  font-weight: 700;
+  margin-bottom: 16px;
+}
+
+.card-passo h3 {
+  font-size: 1.2rem;
+  margin-bottom: 8px;
+}
+
+.card-passo p {
+  color: #64748b;
+  font-size: 0.95rem;
+  line-height: 1.5;
+}
+
+.tech-stack {
+  text-align: center;
+  padding: 40px;
+  background: #f8fafc;
+  border-radius: 12px;
+}
+
+.tech-stack h2 {
+  font-size: 1.5rem;
+  margin-bottom: 20px;
+}
+
+.badges {
+  display: flex;
+  justify-content: center;
+  gap: 12px;
+  flex-wrap: wrap;
+}
+
+.badge {
+  background: #e0e7ff;
+  color: #4338ca;
+  padding: 8px 16px;
+  border-radius: 20px;
+  font-weight: 600;
+  font-size: 0.9rem;
+}

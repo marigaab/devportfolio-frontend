@@ -1,0 +1,54 @@
+<app-navbar></app-navbar>
+
+<div class="contato-container">
+  <header class="contato-header">
+    <h1>Entre em <span>Contato</span> 📬</h1>
+    <p>Envie uma mensagem para os desenvolvedores ou suporte da plataforma.</p>
+  </header>
+
+  <div class="contato-card">
+    <div *ngIf="mensagemEnviada" class="alert-sucesso">
+      ✨ Sua mensagem foi enviada com sucesso! Em breve responderemos.
+    </div>
+
+    <form (ngSubmit)="enviarContato()" class="contato-form">
+      <div class="form-group">
+        <label for="nome">Seu Nome *</label>
+        <input 
+          type="text" 
+          id="nome" 
+          name="nome" 
+          [(ngModel)]="novaMensagem.nome" 
+          placeholder="Ex: Maria Silva" 
+          required
+        >
+      </div>
+
+      <div class="form-group">
+        <label for="email">Seu E-mail *</label>
+        <input 
+          type="email" 
+          id="email" 
+          name="email" 
+          [(ngModel)]="novaMensagem.email" 
+          placeholder="exemplo@email.com" 
+          required
+        >
+      </div>
+
+      <div class="form-group">
+        <label for="conteudo">Sua Mensagem *</label>
+        <textarea 
+          id="conteudo" 
+          name="conteudo" 
+          rows="5" 
+          [(ngModel)]="novaMensagem.conteudo" 
+          placeholder="Escreva sua mensagem aqui..." 
+          required
+        ></textarea>
+      </div>
+
+      <button type="submit" class="btn-enviar">Enviar Mensagem</button>
+    </form>
+  </div>
+</div>

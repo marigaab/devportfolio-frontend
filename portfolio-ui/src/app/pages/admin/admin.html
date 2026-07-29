@@ -1,0 +1,199 @@
+<app-navbar></app-navbar>
+
+<div class="admin-container">
+  <div class="admin-header">
+    <h1>Painel Administrativo 🛠️</h1>
+  </div>
+
+  <div class="tabs-navigation">
+    <button [class.active]="abaAtiva === 'perfil'" (click)="mudarAba('perfil')">
+      {{ editandoPerfil ? '✏️ Editando Perfil' : '➕ Cadastrar Perfil' }}
+    </button>
+    <button [class.active]="abaAtiva === 'gerenciar-perfis'" (click)="mudarAba('gerenciar-perfis')">
+      👥 Gerenciar Perfis
+    </button>
+    <button [class.active]="abaAtiva === 'projetos'" (click)="mudarAba('projetos')">
+      💻 Gerenciar Projetos
+    </button>
+    <button [class.active]="abaAtiva === 'mensagens'" (click)="mudarAba('mensagens')">
+      📬 Mensagens Recebidas
+    </button>
+  </div>
+
+  <!-- ABA 1: CADASTRAR/EDITAR PERFIL -->
+  <div *ngIf="abaAtiva === 'perfil'" class="tab-content">
+    <div class="card-form">
+      <h2>{{ editandoPerfil ? 'Editar Desenvolvedor' : 'Cadastrar Novo Desenvolvedor' }}</h2>
+      <form (ngSubmit)="salvarPerfil()">
+        <div class="form-row">
+          <div class="form-group">
+            <label>Nome Completo *</label>
+            <input type="text" [(ngModel)]="novoPerfil.nome" name="nome" required placeholder="Ex: Carlos Souza">
+          </div>
+          <div class="form-group">
+            <label>Cargo / Especialidade *</label>
+            <input type="text" [(ngModel)]="novoPerfil.cargo" name="cargo" required placeholder="Ex: Desenvolvedor Fullstack">
+          </div>
+        </div>
+
+        <div class="form-group">
+          <label>E-mail do Dev *</label>
+          <input type="email" [(ngModel)]="novoPerfil.email" name="email" required placeholder="carlos@email.com">
+        </div>
+
+        <div class="form-group">
+          <label>Biografia / Sobre Mim</label>
+          <textarea rows="3" [(ngModel)]="novoPerfil.bio" name="bio" placeholder="Escreva uma breve apresentação..."></textarea>
+        </div>
+
+        <div class="form-row">
+          <div class="form-group">
+            <label>URL do GitHub</label>
+            <input type="url" [(ngModel)]="novoPerfil.githubUrl" name="githubUrl" placeholder="https://github.com/usuario">
+          </div>
+          <div class="form-group">
+            <label>URL do LinkedIn</label>
+            <input type="url" [(ngModel)]="novoPerfil.linkedinUrl" name="linkedinUrl" placeholder="https://linkedin.com/in/usuario">
+          </div>
+        </div>
+
+        <div class="form-group">
+          <label>URL da Foto de Perfil</label>
+          <input type="url" [(ngModel)]="novoPerfil.fotoUrl" name="fotoUrl" placeholder="https://link-da-foto.jpg">
+        </div>
+
+        <div style="display: flex; gap: 10px;">
+          <button type="submit" class="btn-primary">
+            {{ editandoPerfil ? 'Atualizar Perfil' : 'Salvar Perfil' }}
+          </button>
+          <button type="button" *ngIf="editandoPerfil" (click)="limparFormPerfil()" class="btn-secondary">
+            Cancelar
+          </button>
+        </div>
+      </form>
+    </div>
+  </div>
+
+  <!-- ABA 2: GERENCIAR PERFIS (EDITAR E EXCLUIR) -->
+  <div *ngIf="abaAtiva === 'gerenciar-perfis'" class="tab-content">
+    <div class="card-form">
+      <h2>Desenvolvedores Cadastrados</h2>
+      <div class="table-responsive" *ngIf="listaDevs.length > 0">
+        <table>
+          <thead>
+            <tr>
+              <th>Dev</th>
+              <th>Cargo</th>
+              <th>E-mail</th>
+              <th>Ações</th>
+            </tr>
+          </thead>
+          <tbody>
+            <tr *ngFor="let dev of listaDevs">
+              <td class="user-cell">
+                <img [src]="dev.fotoUrl || 'https://ui-avatars.com/api/?name=' + dev.nome" class="mini-avatar" [alt]="dev.nome">
+                <strong>{{ dev.nome }}</strong>
+              </td>
+              <td>{{ dev.cargo }}</td>
+              <td>{{ dev.email }}</td>
+              <td style="display: flex; gap: 8px;">
+                <button type="button" (click)="prepararEdicaoPerfil(dev)" class="btn-warning">
+                  Editar
+                </button>
+                <button type="button" (click)="deletarPerfil(dev.id || dev.usuarioId)" class="btn-danger">
+                  Excluir
+                </button>
+              </td>
+            </tr>
+          </tbody>
+        </table>
+      </div>
+      <p *ngIf="listaDevs.length === 0" class="empty-msg">Nenhum desenvolvedor cadastrado.</p>
+    </div>
+  </div>
+
+  <!-- ABA 3: GERENCIAR PROJETOS (EDITAR E EXCLUIR) -->
+  <div *ngIf="abaAtiva === 'projetos'" class="tab-content">
+    <div class="card-form">
+      <h2>{{ editandoProjeto ? 'Editar Projeto' : 'Cadastrar Novo Projeto' }}</h2>
+      <form (ngSubmit)="salvarProjeto()">
+        <div class="form-group">
+          <label>Desenvolvedor Responsável *</label>
+          <select [(ngModel)]="novoProjeto.usuarioId" name="usuarioId" required>
+            <option [ngValue]="undefined" disabled selected>Selecione um Desenvolvedor</option>
+            <option *ngFor="let dev of listaDevs" [value]="dev.usuarioId || dev.id">
+              {{ dev.nome }} ({{ dev.email }})
+            </option>
+          </select>
+        </div>
+
+        <div class="form-group">
+          <label>Título do Projeto *</label>
+          <input type="text" [(ngModel)]="novoProjeto.titulo" name="titulo" required placeholder="Ex: Sistema E-commerce">
+        </div>
+
+        <div class="form-group">
+          <label>Tecnologias Usadas *</label>
+          <input type="text" [(ngModel)]="novoProjeto.tecnologias" name="tecnologias" required placeholder="Ex: Java, Spring Boot, Angular">
+        </div>
+
+        <div class="form-group">
+          <label>Descrição *</label>
+          <textarea rows="3" [(ngModel)]="novoProjeto.descricao" name="descricao" required placeholder="Descrição detalhada do projeto..."></textarea>
+        </div>
+
+        <div style="display: flex; gap: 10px;">
+          <button type="submit" class="btn-primary">
+            {{ editandoProjeto ? 'Atualizar Projeto' : 'Salvar Projeto' }}
+          </button>
+          <button type="button" *ngIf="editandoProjeto" (click)="limparFormulario()" class="btn-secondary">
+            Cancelar
+          </button>
+        </div>
+      </form>
+
+      <h2 style="margin-top: 40px;">Projetos Cadastrados</h2>
+      <div class="table-responsive" *ngIf="projetos.length > 0">
+        <table>
+          <thead>
+            <tr>
+              <th>Título</th>
+              <th>Tecnologias</th>
+              <th>Ações</th>
+            </tr>
+          </thead>
+          <tbody>
+            <tr *ngFor="let p of projetos">
+              <td><strong>{{ p.titulo }}</strong></td>
+              <td>{{ p.tecnologias }}</td>
+              <td style="display: flex; gap: 8px;">
+                <button type="button" (click)="prepararEdicaoProjeto(p)" class="btn-warning">
+                  Editar
+                </button>
+                <button type="button" (click)="deletarProjeto(p.id)" class="btn-danger">
+                  Excluir
+                </button>
+              </td>
+            </tr>
+          </tbody>
+        </table>
+      </div>
+      <p *ngIf="projetos.length === 0" class="empty-msg">Nenhum projeto cadastrado.</p>
+    </div>
+  </div>
+
+  <!-- ABA 4: MENSAGENS -->
+  <div *ngIf="abaAtiva === 'mensagens'" class="tab-content">
+    <div class="card-form">
+      <h2>Mensagens de Contato Recebidas</h2>
+      <div *ngFor="let m of mensagens" class="message-card">
+        <div class="msg-header">
+          <strong>{{ m.nome }}</strong>
+          <span>{{ m.email }}</span>
+        </div>
+        <p>{{ m.conteudo }}</p>
+      </div>
+      <p *ngIf="mensagens.length === 0" class="empty-msg">Nenhuma mensagem recebida.</p>
+    </div>
+  </div>
+</div>

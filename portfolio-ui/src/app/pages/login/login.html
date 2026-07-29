@@ -1,0 +1,41 @@
+<app-navbar></app-navbar>
+
+<div class="login-container">
+  <div class="login-card">
+    <h2>Área Administrativa</h2>
+    <p class="subtitle">Acesse para gerenciar o portfólio</p>
+
+    <!-- Alerta de Erro -->
+    <div *ngIf="erro" class="alert-erro">
+      E-mail ou senha incorretos! Tente <strong>admin@email.com</strong> / <strong>123456</strong>.
+    </div>
+
+    <form (ngSubmit)="fazerLogin()">
+      <div class="form-group">
+        <label for="email">E-mail</label>
+        <input 
+          type="email" 
+          id="email" 
+          name="email" 
+          [(ngModel)]="email" 
+          placeholder="admin@email.com" 
+          required
+        >
+      </div>
+
+      <div class="form-group">
+        <label for="senha">Senha</label>
+        <input 
+          type="password" 
+          id="senha" 
+          name="senha" 
+          [(ngModel)]="senha" 
+          placeholder="••••••" 
+          required
+        >
+      </div>
+
+      <button type="submit" class="btn-login">Entrar no Painel</button>
+    </form>
+  </div>
+</div>

@@ -1,0 +1,27 @@
+<app-navbar></app-navbar>
+
+<div class="perfis-container">
+  <header class="perfis-header">
+    <h1>Desenvolvedores Cadastrados 🚀</h1>
+    <p>Conheça os profissionais presentes no DevPortfolio.</p>
+  </header>
+
+  <div class="grid-perfis" *ngIf="listaPerfis.length > 0">
+    <div *ngFor="let dev of listaPerfis" class="dev-card">
+      <img 
+        [src]="dev.fotoUrl || 'https://ui-avatars.com/api/?name=' + dev.nome + '&background=random'" 
+        [alt]="dev.nome" 
+        class="dev-avatar"
+      >
+      <h3>{{ dev.nome }}</h3>
+      <p class="dev-cargo">{{ dev.cargo }}</p>
+      <p class="dev-bio">{{ dev.bio }}</p>
+      
+      <a [routerLink]="['/dev', dev.id || dev.usuarioId]" class="btn-ver-projetos">
+        Ver Projetos ➔
+      </a>
+    </div>
+  </div>
+
+  <p *ngIf="listaPerfis.length === 0" class="empty">Nenhum desenvolvedor cadastrado no banco de dados até o momento.</p>
+</div>
