@@ -7,8 +7,7 @@ import { Projeto } from '../models/projeto';
   providedIn: 'root'
 })
 export class ProjetoService {
-  private readonly API_URL = 'http://localhost:8080/api/projetos';
-
+private readonly API_URL = 'http://147.15.78.144:8080/api/perfil';
   constructor(private http: HttpClient) {}
 
   listarTodos(): Observable<Projeto[]> {

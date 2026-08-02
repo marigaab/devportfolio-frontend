@@ -7,8 +7,7 @@ import { Perfil } from '../models/perfil';
   providedIn: 'root'
 })
 export class PerfilService {
-  private readonly API_URL = 'http://localhost:8080/api/perfil';
-
+private readonly API_URL = 'http://147.15.78.144:8080/api/perfil';
   constructor(private http: HttpClient) {}
 
   listarTodos(): Observable<Perfil[]> {
