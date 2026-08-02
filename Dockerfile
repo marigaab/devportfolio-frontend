@@ -1,13 +1,20 @@
-# Etapa 1: Build (Compilação do Angular com Node 24)
-FROM node:24-alpine AS build
+# Etapa 1: Build da aplicação Angular (usando Node 22)
+FROM node:22-alpine AS build
 WORKDIR /app
+
+# Copia os arquivos de dependência
 COPY portfolio-ui/package*.json ./
 RUN npm install
+
+# Copia o código-fonte e gera o build
 COPY portfolio-ui/ .
-RUN npm run build -- --configuration production
+RUN npm run build
 
 # Etapa 2: Servidor Web Nginx
 FROM nginx:alpine
-COPY --from=build /app/dist/portfolio-ui/browser /usr/share/nginx/html/ || COPY --from=build /app/dist/portfolio-ui /usr/share/nginx/html/
+
+# Copia o resultado do build do Angular para o Nginx
+COPY --from=build /app/dist/portfolio-ui/browser /usr/share/nginx/html
+
 EXPOSE 80
 CMD ["nginx", "-g", "daemon off;"]
