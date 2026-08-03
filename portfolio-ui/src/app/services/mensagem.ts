@@ -7,8 +7,7 @@ import { Mensagem } from '../models/mensagem';
   providedIn: 'root'
 })
 export class MensagemService {
-private readonly API_URL = 'http://147.15.78.144:8080/api/perfil';
-  constructor(private http: HttpClient) {}
+private readonly API_URL = 'http://147.15.78.144:8080/api/mensagens';  constructor(private http: HttpClient) {}
 
   enviarMensagem(mensagem: Mensagem): Observable<Mensagem> {
     return this.http.post<Mensagem>(this.API_URL, mensagem);
