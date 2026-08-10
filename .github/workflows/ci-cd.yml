@@ -6,17 +6,26 @@ on:
   pull_request:
     branches: [ "main" ]
 
+env:
+  REGISTRY: ghcr.io
+  IMAGE_NAME: ghcr.io/${{ github.repository_owner }}/devportfolio-frontend:latest
+
 jobs:
-  build-and-test:
+  # ==========================================
+  # ETAPA 1: CI (Continuous Integration)
+  # ==========================================
+  ci-frontend:
+    name: 🧪 CI - Build & Qualidade Frontend
     runs-on: ubuntu-latest
+
     steps:
       - name: Checkout do Código
         uses: actions/checkout@v4
 
-      - name: Configurar Node.js 24
+      - name: Configurar Node.js 22
         uses: actions/setup-node@v4
         with:
-          node-version: '24'
+          node-version: '22'
 
       - name: Instalar Dependências e Compilar Angular
         working-directory: portfolio-ui
@@ -26,3 +35,42 @@ jobs:
 
       - name: Análise Estática / Lint Simulado
         run: echo "Análise de Qualidade do Frontend concluída com sucesso!"
+
+  # ==========================================
+  # ETAPA 2: CD (Continuous Deployment)
+  # ==========================================
+  cd-frontend:
+    name: 🚀 CD - Push da Imagem & Deploy na OCI
+    needs: ci-frontend # Só executa se o CI passar com sucesso
+    if: github.ref == 'refs/heads/main' || github.ref == 'refs/heads/Pipeline'
+    runs-on: ubuntu-latest
+
+    steps:
+      - name: Checkout do Código
+        uses: actions/checkout@v4
+
+      - name: Login no GitHub Container Registry (GHCR)
+        uses: docker/login-action@v3
+        with:
+          registry: ghcr.io
+          username: ${{ github.actor }}
+          password: ${{ secrets.GITHUB_TOKEN }}
+
+      - name: Build e Push da Imagem Docker
+        uses: docker/build-push-action@v5
+        with:
+          context: ./portfolio-ui
+          push: true
+          tags: ${{ env.IMAGE_NAME }}
+
+      - name: Deploy Remoto na Oracle Cloud via SSH
+        uses: appleboy/ssh-action@v1.0.3
+        with:
+          host: 147.15.78.144
+          username: opc
+          key: ${{ secrets.SSH_PRIVATE_KEY }}
+          script: |
+            cd /home/opc/app
+            docker compose pull devportfolio-frontend
+            docker compose up -d --no-deps devportfolio-frontend
+            docker image prune -f
