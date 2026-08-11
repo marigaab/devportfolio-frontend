@@ -64,8 +64,8 @@ jobs:
       - name: Build e Push da Imagem Docker
         uses: docker/build-push-action@v5
         with:
-          context: .              # <-- Procura na RAIZ do repositório
-          file: ./Dockerfile      # <-- Especifica o Dockerfile na raiz
+          context: .
+          file: ./Dockerfile
           push: true
           tags: ${{ env.IMAGE_NAME }}
 
@@ -78,5 +78,5 @@ jobs:
           script: |
             cd /home/opc/app
             docker compose pull devportfolio-frontend
-            docker compose up -d --no-deps devportfolio-frontend
+            docker compose up -d --no-deps --force-recreate devportfolio-frontend
             docker image prune -f
